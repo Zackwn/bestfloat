@@ -22,7 +22,7 @@ func DisplayItem(item *MarketListingItem, float float64, tab int) {
 }
 
 func main() {
-	fmt.Print("Skin hashname: ")
+	fmt.Print("Skin hash name: ")
 
 	skinName, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 	skinName = skinName[:len(skinName)-2] // remove "\n"
