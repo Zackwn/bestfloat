@@ -27,7 +27,7 @@ func GetSteamListings(start, count int, skinName string) (*MarketListingResponse
 	return listings, nil
 }
 
-func GetItemFloat(item *MarketListingItem) float64 {
+func GetSkinInfo(item *MarketListingItem) *SkinInfo {
 	inspectLink := strings.Replace(item.Asset.Acctions[0].InspectLink, "%listingid%", item.ListingID, 1)
 	inspectLink = strings.Replace(inspectLink, "%assetid%", item.Asset.ID, 1)
 
@@ -39,5 +39,5 @@ func GetItemFloat(item *MarketListingItem) float64 {
 	defer response.Body.Close()
 	res := new(GetFloatResponse)
 	json.NewDecoder(response.Body).Decode(res)
-	return res.Info.Float
+	return &res.ItemInfo
 }

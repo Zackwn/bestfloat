@@ -21,7 +21,25 @@ type MarketListingResponse struct {
 }
 
 type GetFloatResponse struct {
-	Info struct {
-		Float float64 `json:"floatvalue"`
-	} `json:"iteminfo"`
+	ItemInfo SkinInfo `json:"iteminfo"`
+}
+
+type SkinInfo struct {
+	Float    float64  `json:"floatvalue"`
+	Stickers Stickers `json:"stickers"`
+}
+
+type Stickers []struct {
+	Name string `json:"name"`
+}
+
+func (stickers Stickers) Format() string {
+	formatedStickers := ""
+	for index, sticker := range stickers {
+		if index != 0 {
+			formatedStickers += ", "
+		}
+		formatedStickers += sticker.Name
+	}
+	return formatedStickers
 }

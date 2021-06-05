@@ -13,9 +13,10 @@ func GetItemBuyCommand(item *MarketListingItem) string {
 	return fmt.Sprintf("BuyMarketListing('listing', '%v', 730, '2', '%v')", item.ListingID, item.Asset.ID)
 }
 
-func DisplayItem(item *MarketListingItem, float float64, tab int) {
+func DisplayItem(item *MarketListingItem, info *SkinInfo, tab int) {
 	fmt.Println("Tab:", tab)
-	fmt.Println("Float: ", float)
+	fmt.Println("Float: ", info.Float)
+	fmt.Println(len(info.Stickers), "Stickers:", info.Stickers.Format())
 	fmt.Printf("Price: %v$\n", item.Price())
 	fmt.Println("Buying Command:", GetItemBuyCommand(item))
 	fmt.Println("-------------------------------------------------------------------------------------------")
@@ -44,17 +45,17 @@ func main() {
 				return
 			}
 			end <- false
-			var bestFloat float64 = 1
+			bestFloatInfo := new(SkinInfo)
+			bestFloatInfo.Float = 1
 			var bestFloatItem MarketListingItem
 			for _, item := range listings.Items {
-				float := GetItemFloat(&item)
-				if float < bestFloat {
+				skinInfo := GetSkinInfo(&item)
+				if skinInfo.Float < bestFloatInfo.Float {
 					bestFloatItem = item
-					bestFloat = float
+					bestFloatInfo = skinInfo
 				}
 			}
-
-			DisplayItem(&bestFloatItem, bestFloat, tab)
+			DisplayItem(&bestFloatItem, bestFloatInfo, tab)
 		}(start, count, tab)
 
 		if <-end {
